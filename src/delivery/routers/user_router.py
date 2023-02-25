@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Body, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from ...delivery.dto.user import BaseUserDTO, ChangePasswordDTO, LoginDTO, RegisterDTO, ResponseUserDTO
+from ...delivery.dto.user import UpdateUserDTO, ChangePasswordDTO, LoginDTO, RegisterDTO, ResponseUserDTO
 from ...usecase.user_service import UserService
 
-from ..query.pagination_query import PaginationFilterQuery
 
 router = APIRouter(
     prefix="/users",
@@ -36,20 +35,19 @@ async def get_company(dto: RegisterDTO, service: UserService = Depends()):
 
 
 @router.put(
-    path='/update',
+    path='/update/{id}',
     status_code=status.HTTP_200_OK,
     response_model=ResponseUserDTO,
     response_model_exclude_unset=True
 )
-def add_company(dto: BaseUserDTO, service: UserService = Depends()):
-    pass
+async def add_company(id: str, dto: UpdateUserDTO, service: UserService = Depends()):
+    result = await service.update(id, dto)
+    return JSONResponse(content=jsonable_encoder(result))
 
 
 @router.put(
     path='/change-password',
     status_code=status.HTTP_200_OK,
-    # response_model=ResponseUserDTO,
-    # response_model_exclude_unset=True
 )
 async def update_company(dto: ChangePasswordDTO, service: UserService = Depends()):
     result = await service.changePassword(dto)

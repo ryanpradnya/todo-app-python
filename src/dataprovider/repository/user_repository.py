@@ -32,7 +32,12 @@ class UserRepository:
         return self.collection.insert_one(user)
 
     def update(self, id: str, user: UserUpdateModel):
-        return self.collection.find_one_and_update(
+        result = self.collection.find_one_and_update(
             {"_id": ObjectId(id)},
             {"$set": jsonable_encoder(user)}
         )
+
+        if not result:
+            return None
+
+        return serializeDict(self.find_one_by_id(id))

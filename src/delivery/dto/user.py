@@ -2,14 +2,17 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class BaseUserDTO(BaseModel):
+class UpdateUserDTO(BaseModel):
+    username: Optional[str]
+    email: Optional[str]
+    name: Optional[str]
+
+
+class ResponseUserDTO(BaseModel):
+    id: str
     username: str
     email: str
     name: str
-
-
-class ResponseUserDTO(BaseUserDTO):
-    id: str
 
 
 class LoginDTO(BaseModel):
