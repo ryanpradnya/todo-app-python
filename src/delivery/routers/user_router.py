@@ -19,8 +19,8 @@ router = APIRouter(
     response_model=ResponseUserDTO,
     response_model_exclude_unset=True
 )
-def login(dto: LoginDTO, service: UserService = Depends()):
-    result = service.login(dto)
+async def login(dto: LoginDTO, service: UserService = Depends()):
+    result = await service.login(dto)
     return JSONResponse(content=jsonable_encoder(result))
 
 
@@ -30,9 +30,9 @@ def login(dto: LoginDTO, service: UserService = Depends()):
     response_model=ResponseUserDTO,
     response_model_exclude_unset=True
 )
-def get_company(dto: RegisterDTO = Body(...), service: UserService = Depends()):
-    result = service.register(dto)
-    return jsonable_encoder(result)
+async def get_company(dto: RegisterDTO, service: UserService = Depends()):
+    result = await service.register(dto)
+    return JSONResponse(content=jsonable_encoder(result))
 
 
 @router.put(
@@ -48,8 +48,9 @@ def add_company(dto: BaseUserDTO, service: UserService = Depends()):
 @router.put(
     path='/change-password',
     status_code=status.HTTP_200_OK,
-    response_model=ResponseUserDTO,
-    response_model_exclude_unset=True
+    # response_model=ResponseUserDTO,
+    # response_model_exclude_unset=True
 )
-def update_company(dto: ChangePasswordDTO, service: UserService = Depends()):
-    pass
+async def update_company(dto: ChangePasswordDTO, service: UserService = Depends()):
+    result = await service.changePassword(dto)
+    return JSONResponse(content=jsonable_encoder(result))
