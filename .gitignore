@@ -1,0 +1,7 @@
+/env
+.env
+*.pyo
+*.pyc
+__pycache__/
+*.db
+*.db-journal
