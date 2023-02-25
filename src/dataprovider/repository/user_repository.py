@@ -1,5 +1,7 @@
 
 from fastapi import Depends
+
+from ...utils.general import serializeDict
 from ...config.mongo import DatabaseMongoService
 from ...dataprovider.model.user_model import UserModel, UserUpdateModel
 
@@ -12,10 +14,14 @@ class UserRepository:
         return
 
     def find_one_by_id(self, id: str):
-        return self.collection.find_one({"_id": id})
+        return serializeDict(self.collection.find_one({"_id": id}))
 
     def find_one_by_username(self, username: str):
-        return self.collection.find_one({"username": username})
+        result = self.collection.find_one({"username": username})
+        if not result:
+            return None
+
+        return serializeDict(result)
 
     def create(self, user: UserModel):
         return self.collection.insert_one(user)

@@ -3,6 +3,8 @@ from typing import Any
 from fastapi import Depends, HTTPException, status
 from fastapi.concurrency import run_in_threadpool
 from fastapi.encoders import jsonable_encoder
+
+from ..utils.general import serializeDict
 from ..dataprovider.model.user_model import UserModel
 from ..dataprovider.repository.user_repository import UserRepository
 from ..delivery.dto.user import LoginDTO, RegisterDTO
@@ -17,11 +19,11 @@ class UserService:
 
     def login(self, dto: LoginDTO):
         password = hashlib.md5(dto.password.encode("utf-8")).hexdigest()
-        print(password)
+        # print(password)
         # result = await run_in_threadpool(lambda: self.repository.find_one_by_username(dto.username))
         result = self.repository.find_one_by_username(dto.username)
         print("=============>", result)
-        if not result:
+        if not result or result['password'] != password:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Unauthorized"
