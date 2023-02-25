@@ -36,12 +36,7 @@ class UserService:
         return await run_in_threadpool(lambda: self.repository.find_one_by_username(dto.username))
 
     async def update(self, id: str, dto: UpdateUserDTO):
-        exist = await run_in_threadpool(lambda: self.repository.find_one_by_id(id))
-        if not exist:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Unauthorized"
-            )
+        await self.user_validation(id)
 
         exist_user = await run_in_threadpool(lambda: self.repository.find_one_by_username(dto.username))
         if exist_user and exist_user["_id"] != id:
@@ -72,3 +67,11 @@ class UserService:
 
         await run_in_threadpool(lambda: self.repository.update(dto.id, {"password": new_password}))
         return {"message": "success"}
+
+    async def user_validation(self, id: str):
+        exist = await run_in_threadpool(lambda: self.repository.find_one_by_id(id))
+        if not exist:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Unauthorized"
+            )

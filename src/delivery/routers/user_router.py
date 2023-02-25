@@ -7,7 +7,7 @@ from ...usecase.user_service import UserService
 
 
 router = APIRouter(
-    prefix="/users",
+    prefix="/user",
     tags=["user"]
 )
 

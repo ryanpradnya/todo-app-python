@@ -11,9 +11,6 @@ class UserRepository:
     def __init__(self, dbService: DatabaseMongoService = Depends()) -> None:
         self.collection = dbService.get_collection('users')
 
-    def find(self):
-        return
-
     def find_one_by_id(self, id: str):
         result = self.collection.find_one({"_id": ObjectId(id)})
         if not result:

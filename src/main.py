@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config.setting import settings
 from .config.mongo import client
-from .delivery.routers import user_router
+from .delivery.routers import user_router, todo_router
 
 # Init Application
 app = FastAPI(
@@ -29,3 +29,4 @@ def shutdown_db_client():
 
 # Routers
 app.include_router(user_router.router)
+app.include_router(todo_router.router)
