@@ -11,7 +11,7 @@ class TodoListModel(BaseModel):
 
 
 class TodoModel(BaseModel):
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    _id: str = Field(default_factory=uuid.uuid4, alias="_id")
     user_id: str = Field(...)
     title: str = Field(...)
     status: TodoStatus = Field(default_factory=TodoStatus.active)

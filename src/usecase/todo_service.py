@@ -19,10 +19,10 @@ class TodoService:
         self.repository = repository
         self.user_service = user_service
 
-    def find_by_user_id(self, query: PaginationFilterQuery):
-        print(jsonable_encoder(query))
-        result = self.repository.find(query)
-        print(result)
+    async def find_by_user_id(self, query: PaginationFilterQuery):
+        result = await run_in_threadpool(
+            lambda: self.repository.find(query)
+        )
 
         return result
 

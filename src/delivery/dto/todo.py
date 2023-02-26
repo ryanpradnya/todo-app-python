@@ -1,5 +1,5 @@
 from typing import Any, List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ...delivery.enum.todo_enum import TodoStatus
 
@@ -28,3 +28,10 @@ class UpdateTodoDTO(BaseModel):
     title: Optional[str]
     status: Optional[TodoStatus]
     todoList: Optional[List[TodoList]]
+
+
+class TodoQuery:
+    _id: str = Field(default=None)
+    user_id: str = Field(default=None)
+    title: str = Field(default=None)
+    status: str = Field(default=None)

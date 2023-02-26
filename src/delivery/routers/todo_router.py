@@ -17,14 +17,15 @@ router = APIRouter(
     # response_model=list[ResponseTodoDTO],
     # response_model_exclude_unset=True
 )
-def find(
+async def find(
     query: PaginationFilterQuery = Depends(),
     service: TodoService = Depends()
 ):
-    result = service.find_by_user_id(query)
-    return JSONResponse(content=jsonable_encoder(result))
-    # result = await service.find(query)
-    # return JSONResponse(content=jsonable_encoder(result), headers={'x-total-count': str(len(result))})
+    result = await service.find_by_user_id(query)
+    return JSONResponse(
+        content=jsonable_encoder(result["data"]),
+        headers={'x-total-count': str(result["total"])}
+    )
 
 
 @router.get(
