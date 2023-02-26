@@ -4,6 +4,7 @@ from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from bson import ObjectId
 
+from ...utils.mongo import get_sorts
 from ...delivery.query.pagination_query import PaginationFilterQuery
 from ...utils.general import serializeDict, serializeListToCamel
 from ...config.mongo import DatabaseMongoService
@@ -16,7 +17,9 @@ class TodoRepository:
 
     def find(self, query: PaginationFilterQuery):
         offset = query.size * query.page
-        result = self.collection.find().skip(offset).limit(query.size)
+        sorts = get_sorts(TodoModel, query.sort)
+        result = self.collection.find().sort(
+            sorts).skip(offset).limit(query.size)
         return serializeListToCamel(result)
 
     def find_one_by_id(self, id: str):
