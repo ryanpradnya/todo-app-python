@@ -5,3 +5,5 @@
 __pycache__/
 *.db
 *.db-journal
+
+docker-compose.yaml
