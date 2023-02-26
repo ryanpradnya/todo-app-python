@@ -23,10 +23,13 @@ class TodoRepository:
 
     def find(self, query: PaginationFilterQuery):
         offset = query.size * query.page
-        # sorts = get_sorts(TodoModel, query.sort)
-        # print(sorts)
+        sorts = get_sorts(TodoModel, query.sort)
         query_filter = get_query(TodoQuery, query.filters)
+
         result = self.collection.find(query_filter)
+
+        if len(sorts) > 0:
+            result.sort(sorts)
         if offset >= 0:
             result = result.skip(offset)
         if query.size > 0:

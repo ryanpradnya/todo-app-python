@@ -14,11 +14,10 @@ def get_sorts(cls: T, sorts: list[str]):
     for sort in sorts:
         splits = sort.split(',')
         key = "_id" if splits[0] == "id" else to_snake(splits[0])
-        print("key =====>", key)
         if splits[1] == 'asc' and hasattr(cls, key):
-            order.append(Union("key", pymongo.ASCENDING))
+            order.append(("key", pymongo.ASCENDING))
         elif splits[1] == 'desc' and hasattr(cls, key):
-            order.append(Union("key", pymongo.DESCENDING))
+            order.append(("key", pymongo.DESCENDING))
 
     return order
 
