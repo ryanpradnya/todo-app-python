@@ -35,4 +35,4 @@ class TodoRepository:
         if not result:
             return None
 
-        return dict_to_camel(serializeDict(self.find_one_by_id(id)))
+        return self.find_one_by_id(id)

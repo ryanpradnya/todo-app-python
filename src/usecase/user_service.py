@@ -45,8 +45,7 @@ class UserService:
                 detail="Username already taken"
             )
 
-        result = await run_in_threadpool(lambda: self.repository.update(id, jsonable_encoder(obj=dto, exclude_none=True)))
-        return result
+        return await run_in_threadpool(lambda: self.repository.update(id, jsonable_encoder(obj=dto, exclude_none=True)))
 
     async def changePassword(self, dto: ChangePasswordDTO):
         password = hashlib.md5(dto.password.encode("utf-8")).hexdigest()

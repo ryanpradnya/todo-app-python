@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from ...delivery.dto.todo import CreateTodoDTO, ResponseTodoDTO
+from ...delivery.dto.todo import CreateTodoDTO, ResponseTodoDTO, UpdateTodoDTO
 from ...usecase.todo_service import TodoService
 from ..query.pagination_query import PaginationFilterQuery
 
@@ -12,17 +12,18 @@ router = APIRouter(
 )
 
 
-# @router.get(
-#     path='',
-#     response_model=list[ResponseCompanyDTO],
-#     response_model_exclude_unset=True
-# )
-# async def get_companies(
-#     query: PaginationFilterQuery = Depends(),
-#     service: CompanyService = Depends()
-# ):
-#     result = await service.find(query)
-#     return JSONResponse(content=jsonable_encoder(result), headers={'x-total-count': str(len(result))})
+@router.get(
+    path='',
+    # response_model=list[ResponseTodoDTO],
+    # response_model_exclude_unset=True
+)
+def find(
+    query: PaginationFilterQuery = Depends(),
+    service: TodoService = Depends()
+):
+    service.find_by_user_id(query)
+    # result = await service.find(query)
+    # return JSONResponse(content=jsonable_encoder(result), headers={'x-total-count': str(len(result))})
 
 
 @router.get(
@@ -30,7 +31,7 @@ router = APIRouter(
     response_model=ResponseTodoDTO,
     response_model_exclude_unset=True
 )
-async def get_company(id: str, service: TodoService = Depends()):
+async def find_one_by_id(id: str, service: TodoService = Depends()):
     result = await service.find_one_by_id(id)
     return JSONResponse(content=jsonable_encoder(result))
 
@@ -41,26 +42,16 @@ async def get_company(id: str, service: TodoService = Depends()):
     response_model=ResponseTodoDTO,
     response_model_exclude_unset=True
 )
-async def add_company(dto: CreateTodoDTO, service: TodoService = Depends()):
+async def create(dto: CreateTodoDTO, service: TodoService = Depends()):
     result = await service.create(dto)
     return JSONResponse(content=jsonable_encoder(result))
 
 
-# @router.put(
-#     path='/{company_code}',
-#     response_model=ResponseCompanyDTO,
-#     response_model_exclude_unset=True
-# )
-# async def update_company(
-#     company_code: str,
-#     company: UpdateCompanyDTO,
-#     service: CompanyService = Depends()
-# ):
-#     result = await service.update(company_code, company)
-#     if result:
-#         return jsonable_encoder(result)
-#     else:
-#         raise HTTPException(
-#             status_code=status.HTTP_502_BAD_GATEWAY,
-#             detail='Company not created'
-#         )
+@router.put(
+    path='/{id}',
+    response_model=ResponseTodoDTO,
+    response_model_exclude_unset=True
+)
+async def update(id: str, dto: UpdateTodoDTO, service: TodoService = Depends()):
+    result = await service.update(id, dto)
+    return JSONResponse(content=jsonable_encoder(result))
