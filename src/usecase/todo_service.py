@@ -1,12 +1,12 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.concurrency import run_in_threadpool
 from fastapi.encoders import jsonable_encoder
-from camel_converter import dict_to_snake, dict_to_camel
+from camel_converter import dict_to_snake
 
 from ..delivery.query.pagination_query import PaginationFilterQuery
 from ..delivery.enum.todo_enum import TodoStatus
 from ..usecase.user_service import UserService
-from ..delivery.dto.todo import CreateTodoDTO, ResponseTodoDTO, UpdateTodoDTO
+from ..delivery.dto.todo import CreateTodoDTO, UpdateTodoDTO
 from ..dataprovider.repository.todo_repository import TodoRepository
 
 
@@ -46,8 +46,6 @@ class TodoService:
 
     async def update(self, id: str, dto: UpdateTodoDTO):
         todo = await self.find_one_by_id(id)
-        print(todo)
-        print(dto)
 
         if not todo:
             raise HTTPException(

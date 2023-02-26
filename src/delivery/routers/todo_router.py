@@ -14,8 +14,8 @@ router = APIRouter(
 
 @router.get(
     path='',
-    # response_model=list[ResponseTodoDTO],
-    # response_model_exclude_unset=True
+    response_model=list[ResponseTodoDTO],
+    response_model_exclude_unset=True
 )
 async def find(
     query: PaginationFilterQuery = Depends(),
