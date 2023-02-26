@@ -22,7 +22,7 @@ def check_enum_value_exists(cls: T, value: any):
 
 
 def serializeDict(a) -> dict:
-    return {**{i: str(a[i]) for i in a if i == '_id'}, **{i: a[i] for i in a if i != '_id'}}
+    return {"id": str(a["_id"]), **{i: a[i] for i in a if i != "_id"}}
 
 
 def serializeList(entity) -> list:

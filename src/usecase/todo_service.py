@@ -26,7 +26,7 @@ class TodoService:
             lambda: self.repository.find_one_by_id(id)
         )
 
-        return dict_to_camel(jsonable_encoder(result))
+        return result
 
     async def create(self, dto: CreateTodoDTO):
         data = dict_to_snake(jsonable_encoder(dto))

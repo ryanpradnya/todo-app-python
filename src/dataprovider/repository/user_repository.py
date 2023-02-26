@@ -1,4 +1,5 @@
 
+from camel_converter import dict_to_camel
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from bson import ObjectId
@@ -16,14 +17,14 @@ class UserRepository:
         if not result:
             return None
 
-        return serializeDict(result)
+        return dict_to_camel(serializeDict(result))
 
     def find_one_by_username(self, username: str):
         result = self.collection.find_one({"username": username})
         if not result:
             return None
 
-        return serializeDict(result)
+        return dict_to_camel(serializeDict(result))
 
     def create(self, user: UserModel):
         return self.collection.insert_one(user)
@@ -37,4 +38,4 @@ class UserRepository:
         if not result:
             return None
 
-        return serializeDict(self.find_one_by_id(id))
+        return dict_to_camel(serializeDict(self.find_one_by_id(id)))

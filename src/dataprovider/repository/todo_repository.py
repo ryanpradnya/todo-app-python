@@ -1,4 +1,5 @@
 
+from camel_converter import dict_to_camel
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from bson import ObjectId
@@ -20,7 +21,7 @@ class TodoRepository:
         if not result:
             return None
 
-        return serializeDict(result)
+        return dict_to_camel(serializeDict(result))
 
     def create(self, todo: TodoModel):
         return self.collection.insert_one(todo)
@@ -34,4 +35,4 @@ class TodoRepository:
         if not result:
             return None
 
-        return serializeDict(self.find_one_by_id(id))
+        return dict_to_camel(serializeDict(self.find_one_by_id(id)))
