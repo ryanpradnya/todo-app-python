@@ -1,10 +1,9 @@
-from typing import Any
 from fastapi import Depends, HTTPException, status
 from fastapi.concurrency import run_in_threadpool
 from fastapi.encoders import jsonable_encoder
 from camel_converter import dict_to_snake, dict_to_camel
 
-from ..delivery.query.pagination_query import BasePaginationQuery
+from ..delivery.query.pagination_query import PaginationFilterQuery
 from ..delivery.enum.todo_enum import TodoStatus
 from ..usecase.user_service import UserService
 from ..delivery.dto.todo import CreateTodoDTO, ResponseTodoDTO, UpdateTodoDTO
@@ -20,8 +19,12 @@ class TodoService:
         self.repository = repository
         self.user_service = user_service
 
-    def find_by_user_id(self, query: BasePaginationQuery):
-        pass
+    def find_by_user_id(self, query: PaginationFilterQuery):
+        print(jsonable_encoder(query))
+        result = self.repository.find(query)
+        print(result)
+
+        return result
 
     async def find_one_by_id(self, id: str):
         result = await run_in_threadpool(

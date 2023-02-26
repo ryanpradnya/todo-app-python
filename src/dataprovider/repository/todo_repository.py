@@ -4,7 +4,8 @@ from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from bson import ObjectId
 
-from ...utils.general import serializeDict
+from ...delivery.query.pagination_query import PaginationFilterQuery
+from ...utils.general import serializeDict, serializeListToCamel
 from ...config.mongo import DatabaseMongoService
 from ...dataprovider.model.todo_model import TodoModel, TodoUpdateModel
 
@@ -13,8 +14,10 @@ class TodoRepository:
     def __init__(self, dbService: DatabaseMongoService = Depends()) -> None:
         self.collection = dbService.get_collection('todos')
 
-    def find(self):
-        return
+    def find(self, query: PaginationFilterQuery):
+        offset = query.size * query.page
+        result = self.collection.find().skip(offset).limit(query.size)
+        return serializeListToCamel(result)
 
     def find_one_by_id(self, id: str):
         result = self.collection.find_one({"_id": ObjectId(id)})

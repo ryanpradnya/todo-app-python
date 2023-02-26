@@ -21,7 +21,8 @@ def find(
     query: PaginationFilterQuery = Depends(),
     service: TodoService = Depends()
 ):
-    service.find_by_user_id(query)
+    result = service.find_by_user_id(query)
+    return JSONResponse(content=jsonable_encoder(result))
     # result = await service.find(query)
     # return JSONResponse(content=jsonable_encoder(result), headers={'x-total-count': str(len(result))})
 

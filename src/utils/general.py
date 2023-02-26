@@ -1,6 +1,8 @@
 
 from typing import TypeVar
 
+from camel_converter import dict_to_camel
+
 
 T = TypeVar('T')
 
@@ -27,3 +29,7 @@ def serializeDict(a) -> dict:
 
 def serializeList(entity) -> list:
     return [serializeDict(a) for a in entity]
+
+
+def serializeListToCamel(entity) -> list:
+    return [dict_to_camel(serializeDict(a)) for a in entity]
