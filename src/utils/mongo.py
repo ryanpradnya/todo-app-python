@@ -43,6 +43,6 @@ def get_query(cls: T, filters: list[QueryFilterDTO]):
             if QueryFilter[fil.criteria] is QueryFilter.in_vals:
                 query = {**query, key: {"$in": fil.val}}
             if QueryFilter[fil.criteria] is QueryFilter.includes:
-                query = {**query, key: {"$regex": fil.val}}
+                query = {**query, key: {"$regex": f"(?i){fil.val}"}}
 
     return query
