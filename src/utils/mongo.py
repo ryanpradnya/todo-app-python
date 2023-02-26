@@ -1,4 +1,4 @@
-from typing import TypeVar, Union
+from typing import TypeVar
 from camel_converter import to_snake
 import pymongo
 

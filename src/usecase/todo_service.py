@@ -27,15 +27,14 @@ class TodoService:
         return result
 
     async def find_one_by_id(self, id: str):
-        result = await run_in_threadpool(
+        return await run_in_threadpool(
             lambda: self.repository.find_one_by_id(id)
         )
-
-        return result
 
     async def create(self, dto: CreateTodoDTO):
         data = dict_to_snake(jsonable_encoder(dto))
         await self.user_service.user_validation(dto.userId)
+
         result = await run_in_threadpool(
             lambda: self.repository.create({
                 **data,
