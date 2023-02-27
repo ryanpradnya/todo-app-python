@@ -18,16 +18,17 @@ class ResponseTodoDTO(BaseModel):
 
 
 class CreateTodoDTO(BaseModel):
-    userId: str = ""
+    userId: str = Field(default="",
+                        min_length=24, description="Must be 24-character hex string")
     title: Optional[str] = "Title"
     todoList: Optional[List[TodoList]] = []
 
 
 class UpdateTodoDTO(BaseModel):
-    userId: str = Field(
-        min_length=24, description="Must be 24-character hex string")
+    userId: str = Field(default=None,
+                        min_length=24, description="Must be 24-character hex string")
     title: Optional[str]
-    status: Optional[TodoStatus]
+    status: Optional[TodoStatus] = Field(include=[])
     todoList: Optional[List[TodoList]]
 
 

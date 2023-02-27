@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, Path, status, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
@@ -33,7 +33,7 @@ async def find(
     response_model=ResponseTodoDTO,
     response_model_exclude_unset=True
 )
-async def find_one_by_id(id: str, service: TodoService = Depends()):
+async def find_one_by_id(id: str = Path(min_length=24), service: TodoService = Depends()):
     result = await service.find_one_by_id(id)
     return JSONResponse(content=jsonable_encoder(result))
 
@@ -54,6 +54,6 @@ async def create(dto: CreateTodoDTO, service: TodoService = Depends()):
     response_model=ResponseTodoDTO,
     response_model_exclude_unset=True
 )
-async def update(id: str, dto: UpdateTodoDTO, service: TodoService = Depends()):
+async def update(dto: UpdateTodoDTO, id: str = Path(min_length=24), service: TodoService = Depends()):
     result = await service.update(id, dto)
     return JSONResponse(content=jsonable_encoder(result))
