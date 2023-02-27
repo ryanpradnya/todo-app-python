@@ -50,18 +50,17 @@ class UserService:
     async def changePassword(self, dto: ChangePasswordDTO):
         password = hashlib.md5(dto.password.encode("utf-8")).hexdigest()
         new_password = hashlib.md5(dto.newPassword.encode("utf-8")).hexdigest()
-        if password == new_password:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="New password same as old password"
-            )
-
         exist = await run_in_threadpool(lambda: self.repository.find_one_by_id(dto.id))
 
         if not exist or exist["password"] != password:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Unauthorized"
+            )
+        elif password == new_password:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="New password same as old password"
             )
 
         await run_in_threadpool(lambda: self.repository.update(dto.id, {"password": new_password}))
