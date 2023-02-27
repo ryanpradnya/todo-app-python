@@ -1,0 +1,1 @@
+uvicorn src.main:app --workers 4 --reload
