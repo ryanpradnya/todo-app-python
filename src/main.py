@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+
+from .utils.constant.error_constant import ERROR_MESSAGE
 from .config.setting import settings
 from .config.mongo import client
 from .delivery.routers import user_router, todo_router
@@ -19,18 +21,14 @@ app = FastAPI(
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     details = exc.errors()
-    error_detail: dict[str, str] = {}
     for error in details:
-        print(error)
         key = error["loc"][-1]
-        error_detail = {
-            **error_detail,
-            key: error["msg"]
-        }
-    return JSONResponse(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        content=jsonable_encoder({"detail": error_detail}),
-    )
+        message = ERROR_MESSAGE[key] if key in ERROR_MESSAGE else error['msg']
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=jsonable_encoder({"detail": f"{key}, {message}"}),
+        )
+
 
 # Set CORS
 app.add_middleware(
