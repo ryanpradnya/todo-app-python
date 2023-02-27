@@ -24,7 +24,8 @@ class CreateTodoDTO(BaseModel):
 
 
 class UpdateTodoDTO(BaseModel):
-    userId: str
+    userId: str = Field(
+        min_length=24, description="Must be 24-character hex string")
     title: Optional[str]
     status: Optional[TodoStatus]
     todoList: Optional[List[TodoList]]

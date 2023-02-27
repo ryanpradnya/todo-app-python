@@ -21,7 +21,12 @@ class LoginDTO(BaseModel):
     username: str = Field(default="username", regex="^[a-zA-Z0-9]*$",
                           description="Username must be alpha numeric")
     password: str = Field(
-        min_length=6, description="Password minimum length 6 character")
+        min_length=3, description="Password minimum length 3 character")
+
+    class Config:
+        error_msg_templates = {
+            'value_error.str.regex': 'custom error',
+        }
 
 
 class RegisterDTO(LoginDTO):
@@ -31,8 +36,9 @@ class RegisterDTO(LoginDTO):
 
 
 class ChangePasswordDTO(BaseModel):
-    id: str
+    id: str = Field(
+        min_length=24, description="Must be 24-character hex string")
     password: str = Field(
-        min_length=6, description="Password minimum length 6 character")
+        min_length=3, description="Password minimum length 3 character")
     newPassword: str = Field(
-        min_length=6, description="New password minimum length 6 character")
+        min_length=3, description="New password minimum length 3 character")

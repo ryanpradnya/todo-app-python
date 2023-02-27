@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Path, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from pydantic import Field
 
 from ...delivery.dto.user import UpdateUserDTO, ChangePasswordDTO, LoginDTO, RegisterDTO, ResponseUserDTO
 from ...usecase.user_service import UserService
@@ -40,7 +41,7 @@ async def get_company(dto: RegisterDTO, service: UserService = Depends()):
     response_model=ResponseUserDTO,
     response_model_exclude_unset=True
 )
-async def add_company(id: str, dto: UpdateUserDTO, service: UserService = Depends()):
+async def add_company(dto: UpdateUserDTO, id: str = Path(min_length=24), service: UserService = Depends()):
     result = await service.update(id, dto)
     return JSONResponse(content=jsonable_encoder(result))
 
