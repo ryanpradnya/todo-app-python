@@ -11,10 +11,10 @@ class UpdateUserDTO(BaseModel):
 
 
 class ResponseUserDTO(BaseModel):
-    id: str
-    username: str
-    email: str
-    name: str
+    id: Optional[str]
+    username: Optional[str]
+    email: Optional[str]
+    name: Optional[str]
 
 
 class LoginDTO(BaseModel):

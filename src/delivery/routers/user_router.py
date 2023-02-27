@@ -1,7 +1,4 @@
 from fastapi import APIRouter, Depends, Path, status
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
-from pydantic import Field
 
 from ...delivery.dto.user import UpdateUserDTO, ChangePasswordDTO, LoginDTO, RegisterDTO, ResponseUserDTO
 from ...usecase.user_service import UserService
@@ -20,8 +17,7 @@ router = APIRouter(
     response_model_exclude_unset=True
 )
 async def login(dto: LoginDTO, service: UserService = Depends()):
-    result = await service.login(dto)
-    return JSONResponse(content=jsonable_encoder(result))
+    return await service.login(dto)
 
 
 @router.post(
@@ -31,25 +27,20 @@ async def login(dto: LoginDTO, service: UserService = Depends()):
     response_model_exclude_unset=True
 )
 async def get_company(dto: RegisterDTO, service: UserService = Depends()):
-    result = await service.register(dto)
-    return JSONResponse(content=jsonable_encoder(result))
+    return await service.register(dto)
 
 
 @router.put(
     path='/update/{id}',
-    status_code=status.HTTP_200_OK,
     response_model=ResponseUserDTO,
     response_model_exclude_unset=True
 )
 async def add_company(dto: UpdateUserDTO, id: str = Path(min_length=24), service: UserService = Depends()):
-    result = await service.update(id, dto)
-    return JSONResponse(content=jsonable_encoder(result))
+    return await service.update(id, dto)
 
 
 @router.put(
     path='/change-password',
-    status_code=status.HTTP_200_OK,
 )
 async def update_company(dto: ChangePasswordDTO, service: UserService = Depends()):
-    result = await service.changePassword(dto)
-    return JSONResponse(content=jsonable_encoder(result))
+    return await service.changePassword(dto)

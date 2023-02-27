@@ -13,13 +13,13 @@ app = FastAPI(
     version=settings.ENGINE_VERSION
 )
 
+# Handler
+
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    # Get the original 'detail' list of errors
     details = exc.errors()
     error_detail: dict[str, str] = {}
-    # Replace 'msg' with 'message' for each error
     for error in details:
         print(error)
         key = error["loc"][-1]

@@ -10,11 +10,11 @@ class TodoList(BaseModel):
 
 
 class ResponseTodoDTO(BaseModel):
-    id: str
-    userId: str
-    title: str
-    status: TodoStatus
-    todoList: List[TodoList]
+    id: Optional[str]
+    userId: Optional[str]
+    title: Optional[str]
+    status: Optional[TodoStatus]
+    todoList: Optional[List[TodoList]]
 
 
 class CreateTodoDTO(BaseModel):

@@ -34,8 +34,7 @@ async def find(
     response_model_exclude_unset=True
 )
 async def find_one_by_id(id: str = Path(min_length=24), service: TodoService = Depends()):
-    result = await service.find_one_by_id(id)
-    return JSONResponse(content=jsonable_encoder(result))
+    return await service.find_one_by_id(id)
 
 
 @router.post(
@@ -45,8 +44,7 @@ async def find_one_by_id(id: str = Path(min_length=24), service: TodoService = D
     response_model_exclude_unset=True
 )
 async def create(dto: CreateTodoDTO, service: TodoService = Depends()):
-    result = await service.create(dto)
-    return JSONResponse(content=jsonable_encoder(result))
+    return await service.create(dto)
 
 
 @router.put(
@@ -55,5 +53,4 @@ async def create(dto: CreateTodoDTO, service: TodoService = Depends()):
     response_model_exclude_unset=True
 )
 async def update(dto: UpdateTodoDTO, id: str = Path(min_length=24), service: TodoService = Depends()):
-    result = await service.update(id, dto)
-    return JSONResponse(content=jsonable_encoder(result))
+    return await service.update(id, dto)
